@@ -128,7 +128,7 @@ $$
 Por fim, a porcentagem de ruído é:
 
 $$
-\text{ruído (\%)} =
+\text{ruído \%} =
 100 \times \frac{\sigma_{\text{ruído}}}{\sigma_y}
 $$
 
