@@ -213,23 +213,4 @@ Após o treinamento, o programa exibirá:
 - O desvio padrão do ruído
 - A porcentagem de ruído
 
-Depois, informe uma nota de escrita para receber a previsão da nota de leitura:
-
-## Modelo
-
-```math
-H(x) = a + bx
-```
-## Possíveis melhorias
-
-- Utilizar todas as linhas do dataset
-- Normalizar a variável $x$ antes do treinamento
-- Separar os dados em treino e teste
-- Calcular $R^2$, MAE e RMSE
-- Implementar regressão múltipla utilizando também `math score`
-- Melhorar o parser de CSV para tratar campos entre aspas
-
-\[
-\hat{y} = a + bx
-\]
-
+Depois, informe uma nota de escrita para receber a previsão da nota de leitura.
