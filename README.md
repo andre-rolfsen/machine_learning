@@ -1,152 +1,197 @@
-# PROJETO DE MACHINE LEARNING EM LINGUAGEM C
+# PROJETO DE MACHINE LEARNING EM C
 
+## Regressão Linear em C
+(linear-regression.c)
+Este projeto implementa, em C, uma **regressão linear simples** utilizando o algoritmo de **gradiente descendente**.
 
+O objetivo é prever a nota de **leitura** (`reading score`) a partir da nota de **escrita** (`writing score`) de estudantes
 
+## Dataset
 
-## REGRESSÃO LINEAR
-Este projeto implementa, em C, uma **regressão linear simples** usando o algoritmo de **gradiente descendente**.
+O dataset utilizado é o **Students Performance in Exams**, disponível no Kaggle.
 
-
-### Modelo
-
-O modelo ajusta uma reta:
-
-\[
-H(x) = a + bx
-\]
-
-Onde:
-
-- \(a\) é o intercepto
-- \(b\) é o coeficiente angular
-- \(x\) é a variável independente
-- \(H(x)\) é o valor previsto
-
-### Função de custo
-
-A qualidade do modelo é medida pelo erro quadrático médio:
-
-\[
-J(a,b) = \frac{1}{N}\sum_{i=1}^{N}(H(x_i)-y_i)^2
-\]
-
-Ou, substituindo o modelo:
-
-\[
-J(a,b) = \frac{1}{N}\sum_{i=1}^{N}(a+bx_i-y_i)^2
-\]
-
-O objetivo do treinamento é encontrar os valores de \(a\) e \(b\) que minimizam \(J(a,b)\).
-
-### Gradientes
-
-A derivada parcial de \(J\) em relação ao intercepto \(a\) é:
-
-\[
-\frac{\partial J}{\partial a}
-=
-\frac{2}{N}\sum_{i=1}^{N}(a+bx_i-y_i)
-\]
-
-A derivada parcial em relação ao coeficiente angular \(b\) é:
-
-\[
-\frac{\partial J}{\partial b}
-=
-\frac{2}{N}\sum_{i=1}^{N}(a+bx_i-y_i)x_i
-\]
-
-### Atualização por gradiente descendente
-
-Em cada iteração, os parâmetros são atualizados na direção oposta ao gradiente:
-
-\[
-a \leftarrow a - \alpha \frac{\partial J}{\partial a}
-\]
-
-\[
-b \leftarrow b - \alpha \frac{\partial J}{\partial b}
-\]
-
-Onde \(\alpha\) é a **taxa de aprendizado**.
-
-### Ruído estimado
-
-O resíduo de cada observação é a diferença entre o valor real e o valor previsto:
-
-\[
-e_i = y_i - H(x_i)
-\]
-
-O desvio padrão do ruído é estimado por:
-
-\[
-\sigma_{\text{ruído}}
-=
-\sqrt{\frac{\sum_{i=1}^{N} e_i^2}{N-2}}
-\]
-
-O denominador \(N-2\) é usado porque a regressão linear simples estima dois parâmetros: \(a\) e \(b\).
-
-## Porcentagem de ruído
-
-A porcentagem de ruído é calculada em relação ao desvio padrão dos valores reais de \(y\):
-
-\[
-\sigma_y =
-\sqrt{\frac{\sum_{i=1}^{N}(y_i-\bar{y})^2}{N}}
-\]
-
-Onde:
-
-\[
-\bar{y} = \frac{1}{N}\sum_{i=1}^{N} y_i
-\]
-
-Assim, a porcentagem de ruído é:
-
-\[
-\text{ruído (\%)} =
-100 \times \frac{\sigma_{\text{ruído}}}{\sigma_y}
-\]
-
-### Coeficiente de determinação
-
-A relação aproximada entre a porcentagem de ruído e o \(R^2\) é:
-
-\[
-R^2 = 1 - \left(\frac{\sigma_{\text{ruído}}}{\sigma_y}\right)^2
-\]
-
-O \(R^2\) representa a proporção da variância de \(y\) explicada pelo modelo:
-
-\[
-R^2 = 1 - \frac{SSE}{SST}
-\]
-
-Onde:
-
-\[
-SSE = \sum_{i=1}^{N}(y_i-\hat{y}_i)^2
-\]
-
-\[
-SST = \sum_{i=1}^{N}(y_i-\bar{y})^2
-\]
-
-### Dataset
-
-O dataset utilizado é o **Students Performance in Exams**, disponível no Kaggle:
+**Link para download:**
 
 [Students Performance in Exams — Kaggle](https://www.kaggle.com/datasets/spscientist/students-performance-in-exams?resource=download)
 
-### Como compilar
+Após baixar o arquivo, coloque-o na mesma pasta do código-fonte e renomeie-o para:
+
+```text
+StudentsPerformance.csv
+```
+
+## Estrutura do CSV
+
+O programa espera um arquivo CSV com o seguinte cabeçalho:
+
+```csv
+"gender","race/ethnicity","parental level of education","lunch","test preparation course","math score","reading score","writing score"
+```
+
+O programa utiliza:
+
+- `writing score` como variável independente $x$
+- `reading score` como variável dependente $y$
+
+## Modelo
+
+O modelo ajusta uma reta:
+
+$$
+H(x) = a + bx
+$$
+
+Onde:
+
+- $a$ é o intercepto
+- $b$ é o coeficiente angular
+- $x$ é a nota de escrita
+- $H(x)$ é a previsão da nota de leitura
+
+## Função de custo
+
+A qualidade do modelo é medida pelo erro quadrático médio:
+
+$$
+J(a,b) = \frac{1}{N}\sum_{i=1}^{N}(H(x_i)-y_i)^2
+$$
+
+Substituindo o modelo:
+
+$$
+J(a,b) = \frac{1}{N}\sum_{i=1}^{N}(a + bx_i - y_i)^2
+$$
+
+O objetivo do treinamento é encontrar os valores de $a$ e $b$ que minimizam $J(a,b)$.
+
+## Gradiente descendente
+
+O gradiente descendente atualiza os parâmetros na direção que reduz a função de custo.
+
+A derivada parcial em relação ao intercepto $a$ é:
+
+$$
+\frac{\partial J}{\partial a}
+=
+\frac{2}{N}\sum_{i=1}^{N}(a + bx_i - y_i)
+$$
+
+A derivada parcial em relação ao coeficiente angular $b$ é:
+
+$$
+\frac{\partial J}{\partial b}
+=
+\frac{2}{N}\sum_{i=1}^{N}(a + bx_i - y_i)x_i
+$$
+
+A atualização dos parâmetros é feita por:
+
+$$
+a \leftarrow a - \alpha \frac{\partial J}{\partial a}
+$$
+
+$$
+b \leftarrow b - \alpha \frac{\partial J}{\partial b}
+$$
+
+Onde $\alpha$ é a **taxa de aprendizado**.
+
+## Ruído estimado
+
+O resíduo de cada observação é a diferença entre o valor real e o valor previsto:
+
+$$
+e_i = y_i - H(x_i)
+$$
+
+O desvio padrão do ruído é estimado por:
+
+$$
+\sigma_{\text{ruído}}
+=
+\sqrt{\frac{\sum_{i=1}^{N} e_i^2}{N-2}}
+$$
+
+O denominador $N-2$ é utilizado porque a regressão linear simples estima dois parâmetros: $a$ e $b$.
+
+## Porcentagem de ruído
+
+A porcentagem de ruído é calculada em relação ao desvio padrão dos valores reais de $y$.
+
+Primeiro, calcula-se a média:
+
+$$
+\bar{y} = \frac{1}{N}\sum_{i=1}^{N} y_i
+$$
+
+Depois, o desvio padrão:
+
+$$
+\sigma_y =
+\sqrt{\frac{\sum_{i=1}^{N}(y_i-\bar{y})^2}{N}}
+$$
+
+Por fim, a porcentagem de ruído é:
+
+$$
+\text{ruído (\%)} =
+100 \times \frac{\sigma_{\text{ruído}}}{\sigma_y}
+$$
+
+## Coeficiente de determinação
+
+A relação aproximada entre a porcentagem de ruído e o $R^2$ é:
+
+$$
+R^2 = 1 - \left(\frac{\sigma_{\text{ruído}}}{\sigma_y}\right)^2
+$$
+
+O $R^2$ representa a proporção da variância de $y$ explicada pelo modelo:
+
+$$
+R^2 = 1 - \frac{SSE}{SST}
+$$
+
+Onde:
+
+$$
+SSE = \sum_{i=1}^{N}(y_i-\hat{y}_i)^2
+$$
+
+$$
+SST = \sum_{i=1}^{N}(y_i-\bar{y})^2
+$$
+
+## Pré-requisitos
+
+É necessário ter o compilador GCC instalado.
+
+### Linux
+
+```bash
+sudo apt update
+sudo apt install build-essential
+```
+
+### Windows
+
+Você pode utilizar:
+
+- WSL com Ubuntu
+- MinGW-w64
+- MSYS2
+
+## Como compilar
+
+Na pasta do projeto, execute:
 
 ```bash
 gcc linear-regression.c -o linear-regression -lm
 ```
 
-### Como executar
+O parâmetro `-lm` é necessário porque o programa utiliza funções matemáticas da biblioteca `libm`, como `sqrtf()`.
+
+## Como executar
 
 ```bash
 ./linear-regression
@@ -160,7 +205,28 @@ linear-regression.exe
 
 ## Como usar
 
-Após o treinamento, informe um valor de \(x\) quando o programa solicitar. Ele retornará a previsão:
+Após o treinamento, o programa exibirá:
+
+- Os coeficientes aprendidos $a$ e $b$
+- O custo final $J(a,b)$
+- A equação da reta ajustada
+- O desvio padrão do ruído
+- A porcentagem de ruído
+
+Depois, informe uma nota de escrita para receber a previsão da nota de leitura:
+
+$$
+\hat{y} = a + bx
+$$
+
+## Possíveis melhorias
+
+- Utilizar todas as linhas do dataset
+- Normalizar a variável $x$ antes do treinamento
+- Separar os dados em treino e teste
+- Calcular $R^2$, MAE e RMSE
+- Implementar regressão múltipla utilizando também `math score`
+- Melhorar o parser de CSV para tratar campos entre aspas
 
 \[
 \hat{y} = a + bx
