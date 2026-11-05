@@ -140,21 +140,6 @@ $$
 R^2 = 1 - \left(\frac{\sigma_{\text{ruído}}}{\sigma_y}\right)^2
 $$
 
-O $R^2$ representa a proporção da variância de $y$ explicada pelo modelo:
-
-$$
-R^2 = 1 - \frac{SSE}{SST}
-$$
-
-Onde:
-
-$$
-SSE = \sum_{i=1}^{N}(y_i-\hat{y}_i)^2
-$$
-
-$$
-SST = \sum_{i=1}^{N}(y_i-\bar{y})^2
-$$
 
 ## Pré-requisitos
 
