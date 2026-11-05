@@ -53,13 +53,7 @@ Onde:
 A qualidade do modelo é medida pelo erro quadrático médio:
 
 $$
-J(a,b) = \frac{1}{N}\sum_{i=1}^{N}(H(x_i)-y_i)^2
-$$
-
-Substituindo o modelo:
-
-$$
-J(a,b) = \frac{1}{N}\sum_{i=1}^{N}(a + bx_i - y_i)^2
+J(a,b) = \frac{1}{2N}\sum_{i=1}^{N}(H(x_i)-y_i)^2
 $$
 
 O objetivo do treinamento é encontrar os valores de $a$ e $b$ que minimizam $J(a,b)$.
