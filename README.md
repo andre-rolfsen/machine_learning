@@ -71,6 +71,7 @@ O gradiente descendente atualiza os parâmetros na direção que reduz a funçã
 A derivada parcial em relação ao intercepto $a$ é:
 
 $$
+
 \frac{\partial J}{\partial a}
 =
 \frac{2}{N}\sum_{i=1}^{N}(a + bx_i - y_i)
