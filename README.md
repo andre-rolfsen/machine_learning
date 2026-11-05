@@ -1,5 +1,8 @@
 # PROJETO DE MACHINE LEARNING EM LINGUAGEM C
 
+
+
+
 ## REGRESSÃO LINEAR
 Este projeto implementa, em C, uma **regressão linear simples** usando o algoritmo de **gradiente descendente**.
 
