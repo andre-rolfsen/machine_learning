@@ -106,13 +106,11 @@ $$
 e_i = y_i - H(x_i)
 $$
 
-O desvio padrão do ruído é estimado por:
+## Desvio padrão residual
 
-$$
-\sigma_{\text{ruído}}
-=
-\sqrt{\frac{\sum_{i=1}^{N} e_i^2}{N-2}}
-$$
+```math
+s_e = \sqrt{\frac{\sum_{i=1}^{N}(y_i-\hat{y}_i)^2}{N-2}}
+```
 
 O denominador $N-2$ é utilizado porque a regressão linear simples estima dois parâmetros: $a$ e $b$.
 
@@ -217,10 +215,11 @@ Após o treinamento, o programa exibirá:
 
 Depois, informe uma nota de escrita para receber a previsão da nota de leitura:
 
-$$
-\hat{y} = a + bx
-$$
+## Modelo
 
+```math
+H(x) = a + bx
+```
 ## Possíveis melhorias
 
 - Utilizar todas as linhas do dataset
