@@ -43,7 +43,7 @@ $$
 
 Onde:
 
-- $a$ é o intercepto
+- $a$ é o coeficiente linear
 - $b$ é o coeficiente angular
 - $x$ é a nota de escrita
 - $H(x)$ é a previsão da nota de leitura
@@ -65,7 +65,7 @@ O gradiente descendente atualiza os parâmetros na direção oposta ao gradiente
 Para o erro quadrático médio:
 
 ```math
-J(a,b) = \frac{1}{N}\sum_{i=1}^{N}(a + bx_i - y_i)^2
+J(a,b) = \frac{1}{2N}\sum_{i=1}^{N}(a + bx_i - y_i)^2
 ```
 
 A derivada parcial em relação ao intercepto é:
