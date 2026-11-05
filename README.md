@@ -66,36 +66,37 @@ O objetivo do treinamento é encontrar os valores de $a$ e $b$ que minimizam $J(
 
 ## Gradiente descendente
 
-O gradiente descendente atualiza os parâmetros na direção que reduz a função de custo.
+O gradiente descendente atualiza os parâmetros na direção oposta ao gradiente da função de custo.
 
-A derivada parcial em relação ao intercepto $a$ é:
+Para o erro quadrático médio:
 
-$$
+```math
+J(a,b) = \frac{1}{N}\sum_{i=1}^{N}(a + bx_i - y_i)^2
+```
 
-\frac{\partial J}{\partial a}
-=
-\frac{2}{N}\sum_{i=1}^{N}(a + bx_i - y_i)
-$$
+A derivada parcial em relação ao intercepto é:
 
-A derivada parcial em relação ao coeficiente angular $b$ é:
+```math
+\frac{\partial J}{\partial a} = \frac{2}{N}\sum_{i=1}^{N}(a + bx_i - y_i)
+```
 
-$$
-\frac{\partial J}{\partial b}
-=
-\frac{2}{N}\sum_{i=1}^{N}(a + bx_i - y_i)x_i
-$$
+A derivada parcial em relação ao coeficiente angular é:
 
-A atualização dos parâmetros é feita por:
+```math
+\frac{\partial J}{\partial b} = \frac{2}{N}\sum_{i=1}^{N}(a + bx_i - y_i)x_i
+```
 
-$$
-a \leftarrow a - \alpha \frac{\partial J}{\partial a}
-$$
+Os dois gradientes devem ser calculados usando os mesmos valores atuais dos parâmetros, antes de realizar as atualizações:
 
-$$
-b \leftarrow b - \alpha \frac{\partial J}{\partial b}
-$$
+```math
+a_{\mathrm{novo}} = a - \alpha \frac{\partial J}{\partial a}
+```
 
-Onde $\alpha$ é a **taxa de aprendizado**.
+```math
+b_{\mathrm{novo}} = b - \alpha \frac{\partial J}{\partial b}
+```
+
+O parâmetro de taxa de aprendizado controla o tamanho de cada atualização.
 
 ## Ruído estimado
 
