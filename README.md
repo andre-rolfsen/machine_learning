@@ -68,7 +68,7 @@ Para o erro quadrático médio:
 J(a,b) = \frac{1}{2N}\sum_{i=1}^{N}(a + bx_i - y_i)^2
 ```
 
-A derivada parcial em relação ao intercepto é:
+A derivada parcial em relação ao coeficiente linear é:
 
 ```math
 \frac{\partial J}{\partial a} = \frac{2}{N}\sum_{i=1}^{N}(a + bx_i - y_i)
