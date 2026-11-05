@@ -71,13 +71,13 @@ J(a,b) = \frac{1}{2N}\sum_{i=1}^{N}(a + bx_i - y_i)^2
 A derivada parcial em relação ao coeficiente linear é:
 
 ```math
-\frac{\partial J}{\partial a} = \frac{2}{N}\sum_{i=1}^{N}(a + bx_i - y_i)
+\frac{\partial J}{\partial a} = \frac{1}{N}\sum_{i=1}^{N}(a + bx_i - y_i)
 ```
 
 A derivada parcial em relação ao coeficiente angular é:
 
 ```math
-\frac{\partial J}{\partial b} = \frac{2}{N}\sum_{i=1}^{N}(a + bx_i - y_i)x_i
+\frac{\partial J}{\partial b} = \frac{1}{N}\sum_{i=1}^{N}(a + bx_i - y_i)x_i
 ```
 
 Os dois gradientes devem ser calculados usando os mesmos valores atuais dos parâmetros, antes de realizar as atualizações:
