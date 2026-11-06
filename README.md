@@ -268,7 +268,7 @@ Onde `d` é o grau do polinômio.
 \frac{\text{ruído}}{\sigma_y} \times 100
 ```
 
-Onde `\sigma_y` é o desvio padrão de `reading`.
+Onde $\sigma_y$ é o desvio padrão de `reading`.
 
 #### Coeficiente de determinação
 
