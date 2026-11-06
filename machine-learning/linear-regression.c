@@ -130,8 +130,8 @@ int main() {
     float argmin[2];
     float Jmin = 9999999;
     for (int i=0; i<1000; i++) {
-        a = a - alpha*gradienteA(table, a, b);
-        b = b - alpha*gradienteB(table, a, b);
+        a -= alpha*gradienteA(table, a, b);
+        b -= alpha*gradienteB(table, a, b);
 
         if (J(table, a, b) < Jmin) {
             Jmin = J(table, a, b);
