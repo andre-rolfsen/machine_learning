@@ -1,8 +1,5 @@
 # Regressores em C
 
-- **Regressão linear**
-- **Regressão polinomial**
-- **Regressão logística**
 
 Dataset: `StudentsPerformance.csv`
 
