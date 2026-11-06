@@ -63,11 +63,15 @@ A regressão linear prevê `reading` a partir de `writing`.
 
 ### Função de custo
 
+É utilizada para calcular a soma das distâncias dos pontos listados no dataset e da reta
+
 ```math
 J(w) = \frac{1}{2N}\sum_{i=1}^{N}(y_i - \hat{y}_i)^2
 ```
 
 ### Gradiente descendente
+
+Atualizado em cada iteração para gerar coeficientes com menor erro.
 
 ```math
 w_j \leftarrow w_j - \alpha \frac{\partial J(w)}{\partial w_j}
