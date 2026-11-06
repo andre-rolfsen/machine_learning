@@ -181,7 +181,7 @@ int main() {
         printf("Valor de previsão: X=");
         scanf("%f", &nota);
         for (int j=0; j<DEGREE + 1; j++) {
-            prev += argmin[j] * nota *pow(nota, j);
+            prev += argmin[j]  *pow(nota, j);
         }
         printf("(%.2f, %.2f) \n", nota,  prev);
     }
