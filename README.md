@@ -1,4 +1,4 @@
-# Regressores em C
+# Machine Learning em C
 
 
 Dataset: `StudentsPerformance.csv`
