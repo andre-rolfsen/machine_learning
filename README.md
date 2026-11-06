@@ -275,7 +275,7 @@ R^2 = 1 - \left(\frac{\text{ruído}}{\sigma_y}\right)^2
 
 ---
 
-## Estrutura do código
+## Funções
 
 | Função | Objetivo |
 |---|---|
