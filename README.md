@@ -1,195 +1,438 @@
-# PROJETO DE MACHINE LEARNING EM C
+# Regressores em C
 
-## Regressão Linear em C
-(linear-regression.c)
-Este projeto implementa, em C, uma **regressão linear simples** utilizando o algoritmo de **gradiente descendente**.
+Este projeto implementa três modelos de regressão/classificação em linguagem C, treinados por gradiente descendente:
 
-O objetivo é prever a nota de **leitura** (`reading score`) a partir da nota de **escrita** (`writing score`) de estudantes
+- **Regressão linear**
+- **Regressão polinomial**
+- **Regressão logística**
 
-## Dataset
+Os modelos utilizam o arquivo `StudentsPerformance.csv` como base de dados.
 
-O dataset utilizado é o **Students Performance in Exams**, disponível no Kaggle.
+---
 
-**Link para download:**
+## 1. Requisitos
 
-[Students Performance in Exams — Kaggle](https://www.kaggle.com/datasets/spscientist/students-performance-in-exams?resource=download)
+Para compilar e executar os programas, você precisa de:
 
-Após baixar o arquivo, coloque-o na mesma pasta do código-fonte e renomeie-o para:
+- Compilador C, como `gcc`
+- Biblioteca matemática `math.h`
+- Arquivo `StudentsPerformance.csv` no mesmo diretório do executável
+
+### Compilando
+
+```bash
+gcc main.c -o regressor -lm
+```
+
+A opção `-lm` é necessária porque o programa utiliza funções matemáticas como `pow`, `sqrtf` e `exp`.
+
+### Executando
+
+```bash
+./regressor
+```
+
+No Windows:
+
+```bash
+regressor.exe
+```
+
+---
+
+## 2. Estrutura dos dados
+
+O arquivo `StudentsPerformance.csv` deve conter as seguintes colunas:
 
 ```text
-StudentsPerformance.csv
+gender, race/ethnicity, parental level of education, lunch,
+test preparation course, math score, reading score, writing score
 ```
 
-## Estrutura do CSV
+| Modelo | Variável independente | Variável dependente |
+|---|---|---|
+| Linear | `math score` | `reading score` |
+| Polinomial | `math score` | `reading score` |
+| Logístico | `math score` | `gender` |
 
-O programa espera um arquivo CSV com o seguinte cabeçalho:
+### Normalização
 
-```csv
-"gender","race/ethnicity","parental level of education","lunch","test preparation course","math score","reading score","writing score"
+Para os modelos de regressão linear e polinomial, a nota de `math` é dividida por 100:
+
+```math
+x = \frac{\text{math}}{100}
 ```
 
-O programa utiliza:
+Assim, a variável fica no intervalo:
 
-- `writing score` como variável independente $x$
-- `reading score` como variável dependente $y$
+```math
+x \in [0, 1]
+```
 
-## Modelo
+A normalização ajuda o gradiente descendente a convergir de forma mais estável.
 
-O modelo ajusta uma reta:
+---
 
-$$
-H(x) = a + bx
-$$
+## 3. Regressão linear
+
+A regressão linear prevê `reading` a partir de `math`.
+
+O modelo é:
+
+```math
+\hat{y} = w_0 + w_1x
+```
 
 Onde:
 
-- $a$ é o coeficiente linear
-- $b$ é o coeficiente angular
-- $x$ é a nota de escrita
-- $H(x)$ é a previsão da nota de leitura
+- `w_0` é o intercepto
+- `w_1` é o coeficiente angular
+- `x` é a nota de `math` dividida por 100
+- `\hat{y}` é a previsão de `reading`
 
-## Função de custo
-
-A qualidade do modelo é medida pelo erro quadrático médio:
-
-$$
-J(a,b) = \frac{1}{2N}\sum_{i=1}^{N}(H(x_i)-y_i)^2
-$$
-
-O objetivo do treinamento é encontrar os valores de $a$ e $b$ que minimizam $J(a,b)$.
-
-## Gradiente descendente
-
-O gradiente descendente atualiza os parâmetros na direção oposta ao gradiente da função de custo.
-
-Para o erro quadrático médio:
+### Função de custo
 
 ```math
-J(a,b) = \frac{1}{2N}\sum_{i=1}^{N}(a + bx_i - y_i)^2
+J(w) = \frac{1}{2N}\sum_{i=1}^{N}(y_i - \hat{y}_i)^2
 ```
 
-A derivada parcial em relação ao coeficiente linear é:
+### Gradiente descendente
 
 ```math
-\frac{\partial J}{\partial a} = \frac{1}{N}\sum_{i=1}^{N}(a + bx_i - y_i)
+w_j \leftarrow w_j - \alpha \frac{\partial J(w)}{\partial w_j}
 ```
 
-A derivada parcial em relação ao coeficiente angular é:
+O gradiente é:
 
 ```math
-\frac{\partial J}{\partial b} = \frac{1}{N}\sum_{i=1}^{N}(a + bx_i - y_i)x_i
+\frac{\partial J(w)}{\partial w_j}
+=
+\frac{1}{N}\sum_{i=1}^{N}
+(\hat{y}_i - y_i)x_i^j
 ```
 
-Os dois gradientes devem ser calculados usando os mesmos valores atuais dos parâmetros, antes de realizar as atualizações:
+### Configuração recomendada
+
+```c
+#define DEGREE 1
+#define EPOCHS 20000
+#define ALPHA 0.01f
+```
+
+### Exemplo de saída
+
+```text
+w = (0.180360, 0.773727)
+H(w) = 0.180360 + 0.77x
+J(w) = 0.003545
+
+Ruido: 0.08
+Ruido percentual: 57.12
+Correlação: R² = 67.37%
+```
+
+---
+
+## 4. Regressão polinomial
+
+A regressão polinomial generaliza a regressão linear.
+
+Para grau `d`, o modelo é:
 
 ```math
-a_{\mathrm{novo}} = a - \alpha \frac{\partial J}{\partial a}
+\hat{y} = w_0 + w_1x + w_2x^2 + \cdots + w_dx^d
+```
+
+Em forma compacta:
+
+```math
+\hat{y} = \sum_{j=0}^{d} w_jx^j
+```
+
+### Grau 2
+
+Com `DEGREE = 2`:
+
+```math
+\hat{y} = w_0 + w_1x + w_2x^2
+```
+
+### Grau 3
+
+Com `DEGREE = 3`:
+
+```math
+\hat{y} = w_0 + w_1x + w_2x^2 + w_3x^3
+```
+
+### Função de custo
+
+```math
+J(w) = \frac{1}{2N}\sum_{i=1}^{N}(y_i - \hat{y}_i)^2
+```
+
+### Gradiente
+
+```math
+\frac{\partial J(w)}{\partial w_j}
+=
+\frac{1}{N}\sum_{i=1}^{N}
+(\hat{y}_i - y_i)x_i^j
+```
+
+### Configuração recomendada
+
+```c
+#define DEGREE 2
+#define EPOCHS 20000
+#define ALPHA 0.01f
+```
+
+### Resultados obtidos
+
+| Modelo | `J(w)` | Ruído | `R²` |
+|---|---:|---:|---:|
+| Linear | 0.003545 | 0.08 | 67.37% |
+| Quadrático | 0.003633 | 0.09 | 66.53% |
+| Cúbico | 0.003678 | 0.09 | 66.08% |
+
+Neste dataset, o modelo linear apresentou o melhor resultado.
+
+---
+
+## 5. Regressão logística
+
+A regressão logística é usada para classificação binária.
+
+Neste projeto, o objetivo é prever se um aluno é `male` ou `female` a partir da nota de `math`.
+
+A variável dependente é codificada como:
+
+```math
+y =
+\begin{cases}
+1, & \text{se gender = male} \\
+0, & \text{se gender = female}
+\end{cases}
+```
+
+### Modelo
+
+Primeiro, calcula-se o valor linear:
+
+```math
+z = w_0 + w_1x + w_2x^2 + \cdots + w_dx^d
+```
+
+Depois, aplica-se a função sigmoide:
+
+```math
+\hat{y} = \sigma(z)
+=
+\frac{1}{1 + e^{-z}}
+```
+
+A saída `\hat{y}` representa a probabilidade de o aluno ser `male`.
+
+### Função de custo
+
+A regressão logística utiliza a entropia cruzada binária:
+
+```math
+J(w)
+=
+-\frac{1}{N}
+\sum_{i=1}^{N}
+\left[
+y_i\log(\hat{y}_i)
++
+(1-y_i)\log(1-\hat{y}_i)
+\right]
+```
+
+### Gradiente
+
+```math
+\frac{\partial J(w)}{\partial w_j}
+=
+\frac{1}{N}
+\sum_{i=1}^{N}
+(\hat{y}_i - y_i)x_i^j
+```
+
+### Regra de decisão
+
+```math
+\hat{y} > 0.5 \Rightarrow \text{male}
 ```
 
 ```math
-b_{\mathrm{novo}} = b - \alpha \frac{\partial J}{\partial b}
+\hat{y} \leq 0.5 \Rightarrow \text{female}
 ```
 
-O parâmetro de taxa de aprendizado controla o tamanho de cada atualização.
+### Configuração recomendada
 
-## Ruído estimado
+```c
+#define DEGREE 1
+#define EPOCHS 5000
+#define ALPHA 0.1f
+```
 
-O resíduo de cada observação é a diferença entre o valor real e o valor previsto:
+### Previsão
 
-$$
-e_i = y_i - H(x_i)
-$$
+Para prever um novo aluno, informe a nota de `math` na escala original, de 0 a 100.
 
-## Desvio padrão residual
+O programa divide o valor por 100 antes de aplicar o modelo:
 
 ```math
-s_e = \sqrt{\frac{\sum_{i=1}^{N}(y_i-\hat{y}_i)^2}{N-2}}
+x = \frac{\text{nota}}{100}
 ```
 
-O denominador $N-2$ é utilizado porque a regressão linear simples estima dois parâmetros: $a$ e $b$.
+Em seguida, calcula:
 
-## Porcentagem de ruído
-
-A porcentagem de ruído é calculada em relação ao desvio padrão dos valores reais de $y$.
-
-Primeiro, calcula-se a média:
-
-$$
-\bar{y} = \frac{1}{N}\sum_{i=1}^{N} y_i
-$$
-
-Depois, o desvio padrão:
-
-$$
-\sigma_y =
-\sqrt{\frac{\sum_{i=1}^{N}(y_i-\bar{y})^2}{N}}
-$$
-
-Por fim, a porcentagem de ruído é:
-
-$$
-\text{ruído \%} =
-100 \times \frac{\sigma_{\text{ruído}}}{\sigma_y}
-$$
-
-## Coeficiente de determinação
-
-A relação aproximada entre a porcentagem de ruído e o $R^2$ é:
-
-$$
-R^2 = 1 - \left(\frac{\sigma_{\text{ruído}}}{\sigma_y}\right)^2
-$$
-
-
-## Pré-requisitos
-
-É necessário ter o compilador GCC instalado.
-
-### Linux
-
-```bash
-sudo apt update
-sudo apt install build-essential
+```math
+P(\text{male}) = \frac{1}{1 + e^{-z}}
 ```
 
-### Windows
+---
 
-Você pode utilizar:
+## 6. Hiperparâmetros
 
-- WSL com Ubuntu
-- MinGW-w64
-- MSYS2
+| Hiperparâmetro | Função | Efeito |
+|---|---|---|
+| `DEGREE` | Define o grau do polinômio | Quanto maior, mais complexo é o modelo |
+| `EPOCHS` | Número de iterações do gradiente descendente | Quanto maior, mais oportunidades de convergência |
+| `ALPHA` | Taxa de aprendizado | Controla o tamanho do passo de atualização |
 
-## Como compilar
+### DEGREE
 
-Na pasta do projeto, execute:
+Para regressão linear:
 
-```bash
-gcc linear-regression.c -o linear-regression -lm
+```c
+#define DEGREE 1
 ```
 
-O parâmetro `-lm` é necessário porque o programa utiliza funções matemáticas da biblioteca `libm`, como `sqrtf()`.
+Para regressão polinomial:
 
-## Como executar
-
-```bash
-./linear-regression
+```c
+#define DEGREE 2
 ```
 
-No Windows, com MinGW:
+Para regressão logística:
 
-```cmd
-linear-regression.exe
+```c
+#define DEGREE 1
 ```
 
-## Como usar
+### EPOCHS
 
-Após o treinamento, o programa exibirá:
+```c
+#define EPOCHS 20000
+```
 
-- Os coeficientes aprendidos $a$ e $b$
-- O custo final $J(a,b)$
-- A equação da reta ajustada
-- O desvio padrão do ruído
-- A porcentagem de ruído
+Valores maiores podem melhorar a convergência, mas aumentam o tempo de execução.
 
-Depois, informe uma nota de escrita para receber a previsão da nota de leitura.
+### ALPHA
+
+```math
+w_j \leftarrow w_j - \alpha \frac{\partial J(w)}{\partial w_j}
+```
+
+Valores muito grandes podem causar divergência.
+
+Valores muito pequenos podem deixar o treinamento lento.
+
+### Sugestões de alpha
+
+| Escala de `x` | Alpha sugerido |
+|---|---:|
+| 0 a 1 | 0.01 a 0.1 |
+| 0 a 10 | 0.001 a 0.01 |
+| 0 a 100 | 0.00001 a 0.0001 |
+
+Como este projeto normaliza `math` dividindo por 100, `ALPHA = 0.01f` funciona bem para regressão linear e polinomial.
+
+---
+
+## 7. Métricas
+
+### Regressão linear e polinomial
+
+#### Ruído
+
+```math
+\text{ruído}
+=
+\sqrt{
+\frac{1}{N-d-1}
+\sum_{i=1}^{N}
+(y_i - \hat{y}_i)^2
+}
+```
+
+Onde `d` é o grau do polinômio.
+
+#### Ruído percentual
+
+```math
+\text{ruído percentual}
+=
+\frac{\text{ruído}}{\sigma_y} \times 100
+```
+
+Onde `\sigma_y` é o desvio padrão de `reading`.
+
+#### Coeficiente de determinação
+
+```math
+R^2 = 1 - \left(\frac{\text{ruído}}{\sigma_y}\right)^2
+```
+
+Em porcentagem:
+
+```math
+R^2_{\%} = R^2 \times 100
+```
+
+### Regressão logística
+
+A métrica adequada é a acurácia:
+
+```math
+\text{acurácia}
+=
+\frac{\text{número de acertos}}{N}
+```
+
+Em porcentagem:
+
+```math
+\text{acurácia}_{\%}
+=
+\frac{\text{número de acertos}}{N} \times 100
+```
+
+---
+
+## 8. Estrutura do código
+
+| Função | Objetivo |
+|---|---|
+| `predict` | Calcula a previsão do modelo |
+| `J` | Calcula a função de custo |
+| `gradient` | Calcula o gradiente para um coeficiente |
+| `dpy` | Calcula o desvio padrão de `reading` |
+| `ruido` | Calcula o erro padrão residual |
+| `main` | Carrega os dados, treina o modelo e faz previsões |
+
+### Fluxo do programa
+
+1. Abre o arquivo CSV
+2. Lê os dados
+3. Normaliza a variável `math`
+4. Treina o modelo por gradiente descendente
+5. Guarda os melhores coeficientes encontrados
+6. Imprime os coeficientes e métricas
+7. Permite previsões interativas
+
+---
