@@ -56,12 +56,10 @@ A regressão linear prevê `reading` a partir de `writing`.
 \hat{y} = w_0 + w_1x
 ```
 
-Onde:
-
-- ```w_0```math é o coeficiente linear
-- ```w_1```math é o coeficiente angular
-- ```x```math é a nota de `writing`
-- ```\hat{y}```math é a previsão de `reading`
+- $ w_0 $ é o coeficiente linear
+- $ w_1 $ é o coeficiente angular
+- $x$ é a nota de `writing`
+- $\hat{y}$ é a previsão de `reading`
 
 ### Função de custo
 
