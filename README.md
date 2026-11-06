@@ -173,7 +173,7 @@ Depois, colocamos eles na função logistica, para forçar um dominio entre 0 e 
 \frac{1}{1 + e^{-z}}
 ```
 
-A saída `\hat{y}` representa a probabilidade de o aluno ser `male`.
+A saída $\hat{y}$ representa a probabilidade de o aluno ser `male`.
 
 ### Função de custo
 
