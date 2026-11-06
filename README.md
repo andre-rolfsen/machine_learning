@@ -40,7 +40,7 @@ gender, race/ethnicity, parental level of education, lunch,
 test preparation course, math score, reading score, writing score
 ```
 
-| Modelo | Variável independente | Variável dependente |
+| Modelo | X | Y |
 |---|---|---|
 | Linear | `writing score` | `reading score` |
 | Polinomial | `math score` | `reading score` |
