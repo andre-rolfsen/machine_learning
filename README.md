@@ -56,8 +56,8 @@ A regressão linear prevê `reading` a partir de `writing`.
 \hat{y} = w_0 + w_1x
 ```
 
-- $ w_0 $ é o coeficiente linear
-- $ w_1 $ é o coeficiente angular
+- $w_0$ é o coeficiente linear
+- $w_1$ é o coeficiente angular
 - $x$ é a nota de `writing`
 - $\hat{y}$ é a previsão de `reading`
 
