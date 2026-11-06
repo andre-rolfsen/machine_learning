@@ -63,7 +63,7 @@ A regressão linear prevê `reading` a partir de `writing`.
 
 ### Função de custo
 
-É utilizada para calcular a soma das distâncias dos pontos listados no dataset e da reta
+É utilizada para calcular a soma das distâncias entre os pontos e a reta
 
 ```math
 J(w) = \frac{1}{2N}\sum_{i=1}^{N}(y_i - \hat{y}_i)^2
