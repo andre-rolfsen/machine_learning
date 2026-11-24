@@ -209,6 +209,7 @@ O gradiente é exatamente igual ao da regressão polinomial:
 ```math
 \hat{y} \leq 0.5 \Rightarrow \text{female}
 ```
+--
 ## Perceptron
 
 O perceptron não é uma regressão logistica simples, ele utiliza um neurônio de entrada, um neurônio oculto com ReLU e um neurônio de saída
