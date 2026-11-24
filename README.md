@@ -212,7 +212,6 @@ O gradiente é exatamente igual ao da regressão polinomial:
 ## Perceptron
 
 O perceptron não é uma regressão logistica simples, ele utiliza um neurônio de entrada, um neurônio oculto com ReLU e um neurônio de saída
-- 
 
 ```text
 x -> ReLU -> sigmoid -> ŷ
