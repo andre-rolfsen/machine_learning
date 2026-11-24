@@ -209,7 +209,87 @@ O gradiente é exatamente igual ao da regressão polinomial:
 ```math
 \hat{y} \leq 0.5 \Rightarrow \text{female}
 ```
+## Perceptron
 
+O perceptron não é uma regressão logistica simples, ele utiliza um neurônio de entrada, um neurônio oculto com ReLU e um neurônio de saída
+- 
+
+```text
+x -> ReLU -> sigmoid -> ŷ
+```
+
+
+```math
+z_0 = w_{0,0} + w_{1,0}x
+```
+
+```math
+a_0 = \mathrm{ReLU}(z_0)
+```
+
+```math
+z_1 = w_{0,1} + w_{1,1}a_0
+```
+
+```math
+\hat{y} = \sigma(z_1)
+```
+
+### Função ReLU
+
+```math
+\mathrm{ReLU}(x) =
+\begin{cases}
+0, & x < 0 \\
+x, & x \geq 0
+\end{cases}
+```
+
+A ReLU introduz não linearidade na rede.
+
+### Derivada da ReLU
+
+```math
+\mathrm{ReLU}'(x) =
+\begin{cases}
+0, & x < 0 \\
+1, & x > 0
+\end{cases}
+```
+
+### Backpropagation
+
+O erro da camada de saída:
+
+```math
+\delta_1 = \hat{y} - y
+```
+
+O gradiente dos pesos da camada de saída:
+
+```math
+\frac{\partial J}{\partial w_{0,1}} = \delta_1
+```
+
+```math
+\frac{\partial J}{\partial w_{1,1}} = \delta_1a_0
+```
+
+O erro propagado para a camada oculta:
+
+```math
+\delta_0 = \delta_1w_{1,1}\mathrm{ReLU}'(z_0)
+```
+
+Os gradientes da camada oculta são:
+
+```math
+\frac{\partial J}{\partial w_{0,0}} = \delta_0
+```
+
+```math
+\frac{\partial J}{\partial w_{1,0}} = \delta_0x
+```
 
 ---
 
